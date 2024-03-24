@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:newsapp/models/category_model.dart';
+import 'package:newsapp/screens/categories_Tab.dart';
+import 'package:newsapp/screens/data_tab.dart';
 import 'package:newsapp/screens/news_tabs.dart';
 import 'package:newsapp/shared/network/remote/Api-manager.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const String routeName = "HomeScreen";
 
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,23 +41,19 @@ class HomeScreen extends StatelessWidget {
               ),
               borderSide: BorderSide(color: Colors.transparent)),
         ),
-        body: FutureBuilder(
-          future: ApiManager.getSources(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            }
-            if (snapshot.hasError) {
-              return Center(child: Text("Something Went Wrong"));
-            }
-            var SourcesList = snapshot.data?.sources ?? [];
-            if (SourcesList.isEmpty) {
-              return Center(child: Text("No Sources"));
-            }
-            return newsTap(sources: SourcesList);
-          },
-        ),
+        body: selectedCategory == null
+            ? categoryTab(onClicked: onCatgroyClicked)
+            : dataTap(
+                categoryId: selectedCategory!.id,
+              ),
       ),
     );
+  }
+
+  categoryModel? selectedCategory;
+
+  onCatgroyClicked(category) {
+    selectedCategory = category;
+    setState(() {});
   }
 }

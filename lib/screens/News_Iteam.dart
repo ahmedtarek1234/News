@@ -21,6 +21,8 @@ class NewsIteam extends StatelessWidget {
             borderRadius: BorderRadius.circular(18),
             child: CachedNetworkImage(
               imageUrl: Article.urlToImage ?? "",
+              height: 250,
+              fit: BoxFit.fill,
               placeholder: (context, url) =>
                   Center(child: CircularProgressIndicator()),
               errorWidget: (context, url, error) => Icon(Icons.error),

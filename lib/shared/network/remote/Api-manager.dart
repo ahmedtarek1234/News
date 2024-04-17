@@ -23,4 +23,13 @@ class ApiManager {
     var json = jsonDecode(response.body);
     return NewsResponse.fromJson(json);
   }
+  static Future<NewsResponse> getSearchNews(String query) async {
+    print("----->$query");
+    Uri url =
+    Uri.https(contstants.Base_Url, "/v2/everything", {"q": query});
+    var response = await http
+        .get(url, headers: {"x-api-key": "ca558a1e4d284332857bafc1d24e0e32"});
+    var json = jsonDecode(response.body);
+    return NewsResponse.fromJson(json);
+  }
 }
